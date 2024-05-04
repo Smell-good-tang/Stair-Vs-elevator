@@ -18,17 +18,8 @@ efloors::efloors(QWidget *parent) : QMainWindow(parent), ui(new Ui::efloors)
     wrong();
     format_constrain();  // 设置控件格式
 
-    // 关闭页面
-    QObject::connect(ui->btn_cancel, &QPushButton::clicked, [=] { this->close(); });
+    QObject::connect(ui->btn_cancel, &QPushButton::clicked, [=] { this->close(); });  // 关闭页面
     font_default = QFont("华文中宋", 18);
-
-    // 获取工作区域的几何信息（不包括任务栏）
-    QRect availableGeometry = QGuiApplication::primaryScreen()->availableGeometry();
-    // 获取设备像素
-    int screenW = availableGeometry.width();
-    int screenH = availableGeometry.height();
-
-    this->move((screenW - this->width()) / 2, (screenH - this->height()) / 2);
 
     total_8f = 0;
 }
@@ -53,8 +44,7 @@ void efloors::format_constrain()
     ui->li_3->setValidator(IntValidator);
 
     // 页面居中
-    // 获取设备屏幕大小
-    QRect screenRect = QGuiApplication::primaryScreen()->geometry();
+    QRect screenRect = QGuiApplication::primaryScreen()->geometry();  // 获取设备屏幕大小
     // 获取设备像素比
     int screenW = screenRect.width();
     int screenH = screenRect.height();

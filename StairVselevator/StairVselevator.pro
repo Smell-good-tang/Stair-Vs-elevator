@@ -25,3 +25,11 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 RESOURCES += \
     resource.qrc
+
+CONFIG(debug, debug|release)
+   {
+        DEFINES += VLD_MODULE
+        VLD_PATH = "S:/Visual Leak Detector"
+        INCLUDEPATH += $${VLD_PATH}/include
+        LIBS += -L$${VLD_PATH}/lib/Win64 -lvld
+   }

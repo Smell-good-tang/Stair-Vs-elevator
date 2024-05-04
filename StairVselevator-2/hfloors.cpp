@@ -20,17 +20,9 @@ hfloors::hfloors(QWidget *parent) : QMainWindow(parent), ui(new Ui::hfloors)
 
     format_constrain();  // 限制控件格式
 
-    // 关闭页面
-    QObject::connect(ui->btn_cancel, &QPushButton::clicked, [=] { this->close(); });
+    QObject::connect(ui->btn_cancel, &QPushButton::clicked, [=] { this->close(); });  // 关闭页面
+
     font_default = QFont("华文中宋", 18);
-
-    // 获取工作区域的几何信息（不包括任务栏）
-    QRect availableGeometry = QGuiApplication::primaryScreen()->availableGeometry();
-    // 获取设备像素
-    int screenW = availableGeometry.width();
-    int screenH = availableGeometry.height();
-
-    this->move((screenW - this->width()) / 2, (screenH - this->height()) / 2);
 }
 
 hfloors::~hfloors()
@@ -61,6 +53,13 @@ void hfloors::format_constrain()
     ui->li_1->setValidator(IntValidator);
     ui->li_2->setValidator(IntValidator);
     ui->li_3->setValidator(IntValidator);
+
+    // 页面居中
+    QRect screenRect = QGuiApplication::primaryScreen()->geometry();  // 获取设备屏幕大小
+    // 获取设备像素比
+    int screenW = screenRect.width();
+    int screenH = screenRect.height();
+    this->move((screenW - this->width()) / 2, (screenH - this->height()) / 2);
 }
 
 // 统一设置消息框
@@ -81,30 +80,24 @@ void hfloors::closeEvent(QCloseEvent *event)
     delete box;
 }
 
-void hfloors::refont(const QFont &a)
+void hfloors::refont(const QFont &font)
 {
     // 标签、按钮重设字体
-    ui->label_4->setFont(a);
-    ui->label_5->setFont(a);
-    ui->label_6->setFont(a);
-    ui->btn_caculate->setFont(a);
-    ui->btn_confirm->setFont(a);
-    ui->btn_cancel->setFont(a);
-}
+    ui->label_4->setFont(font);
+    ui->label_5->setFont(font);
+    ui->label_6->setFont(font);
+    ui->btn_caculate->setFont(font);
+    ui->btn_confirm->setFont(font);
+    ui->btn_cancel->setFont(font);
 
-void hfloors::refont1(const QFont &c)
-{
     // 表格重设字体
-    ui->table_floor->setFont(c);
-    ui->table_floor->horizontalHeader()->setFont(c);
-}
+    ui->table_floor->setFont(font);
+    ui->table_floor->horizontalHeader()->setFont(font);
 
-void hfloors::refont2(const QFont &b)
-{
     // 输入栏重设字体
-    ui->li_1->setFont(b);
-    ui->li_2->setFont(b);
-    ui->li_3->setFont(b);
+    ui->li_1->setFont(font);
+    ui->li_2->setFont(font);
+    ui->li_3->setFont(font);
 }
 
 void hfloors::on_btn_caculate_clicked()
@@ -325,10 +318,8 @@ void hfloors::resizeEvent(QResizeEvent *event)
     qreal scaleFactor = QGuiApplication::primaryScreen()->devicePixelRatio();  // 获取主屏幕的缩放比例
 
     QFont font = font_resize(Width, Height, scaleFactor);
-    // 当前页面的高度或宽度在某个范围，改变控件字体格式
-    refont(font);
-    refont1(font);
-    refont2(font);
+
+    refont(font);  // 当前页面的高度或宽度在某个范围，改变控件字体格式
 }
 
 // 键盘按键，控制按钮
