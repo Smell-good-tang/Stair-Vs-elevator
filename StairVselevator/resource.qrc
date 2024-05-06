@@ -1,6 +1,0 @@
-<RCC>
-    <qresource prefix="/pictures">
-        <file>jt.png</file>
-        <file>Genshin.jpg</file>
-    </qresource>
-</RCC>
