@@ -14,15 +14,18 @@ hfloors::hfloors(QWidget *parent) : QMainWindow(parent), ui(new Ui::hfloors)
 {
     ui->setupUi(this);
     model        = new QStandardItemModel(this);
-    editDelegate = new TableDelegate(this);
-    floors       = new QStandardItem();
-    stairs       = new QStandardItem();
+    editDelegate = new TableDelegate();
+    floors       = nullptr;
+    stairs       = nullptr;
 
     format_constrain();  // 限制控件格式
 
     QObject::connect(ui->btn_cancel, &QPushButton::clicked, [=] { this->close(); });  // 关闭页面
 
     font_default = QFont("华文中宋", 18);
+
+    f_16f = nullptr;
+    k_16f = nullptr;
 }
 
 hfloors::~hfloors()
@@ -35,8 +38,18 @@ hfloors::~hfloors()
         }
     }
     delete model;
+    model = nullptr;
     delete editDelegate;
     delete IntValidator;
+
+    // 当数组不再需要时，释放内存
+    delete[] f_16f;
+    delete[] k_16f;
+
+    // 将指针设置为nullptr，避免出现悬挂指针
+    f_16f = nullptr;
+    k_16f = nullptr;
+
     delete ui;
 }
 
@@ -138,6 +151,14 @@ void hfloors::on_btn_caculate_clicked()
 
             // 数据合规
             else {
+                // 当数组不再需要时，释放内存
+                delete[] f_16f;
+                delete[] k_16f;
+
+                // 将指针设置为nullptr，避免出现悬挂指针
+                f_16f = nullptr;
+                k_16f = nullptr;
+
                 k_16f = new int[total_16f + 1];
                 // int* k_16f = (int*)malloc(total_16f+1);//初始化上下楼层数的数组
                 f_16f = new bool[total_16f + 1];
@@ -257,12 +278,17 @@ void hfloors::on_btn_confirm_clicked()
     } else if (total_16f != total_16f_child) {
         total_16f = total_16f_child;
 
-        // 初始化上下楼层表格
-        model = new QStandardItemModel(total_16f, 2);
+        for (int row = 0; row < model->rowCount(); ++row) {
+            for (int col = 0; col < model->columnCount(); ++col) {
+                delete model->item(row, col);
+            }
+        }
+        delete model;
+        model = nullptr;
 
-        // 限制上下楼层表格输入内容
-        editDelegate = new TableDelegate();
-        ui->table_floor->setItemDelegateForColumn(1, editDelegate);
+        model = new QStandardItemModel(total_16f, 2);  // 初始化上下楼层表格
+
+        ui->table_floor->setItemDelegateForColumn(1, editDelegate);  // 限制上下楼层表格输入内容
 
         // 设置表格标题
         model->setHeaderData(0, Qt::Horizontal, "楼层");

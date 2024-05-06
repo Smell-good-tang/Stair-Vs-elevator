@@ -22,14 +22,24 @@ efloors::efloors(QWidget *parent) : QMainWindow(parent), ui(new Ui::efloors)
     font_default = QFont("华文中宋", 18);
 
     total_8f = 0;
+
+    f_8f = nullptr;
+    k_8f = nullptr;
 }
 
 efloors::~efloors()
 {
     delete IntValidator;
-
     label_vector.clear();
     floors_vector.clear();
+
+    // 当数组不再需要时，释放内存
+    delete[] f_8f;
+    delete[] k_8f;
+
+    // 将指针设置为nullptr，避免出现悬挂指针
+    f_8f = nullptr;
+    k_8f = nullptr;
 
     delete ui;
 }
@@ -130,6 +140,14 @@ void efloors::on_btn_caculate_clicked()
             } else if (start_8f > total_8f || end_8f > total_8f) {
                 messagebox_common("注意！", "开始层和目的层均不能超出总层数。");
             } else {
+                // 当数组不再需要时，释放内存
+                delete[] f_8f;
+                delete[] k_8f;
+
+                // 将指针设置为nullptr，避免出现悬挂指针
+                f_8f = nullptr;
+                k_8f = nullptr;
+
                 k_8f = new int[total_8f + 1];
                 f_8f = new bool[total_8f + 1];
 
