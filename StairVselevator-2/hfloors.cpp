@@ -22,7 +22,7 @@ hfloors::hfloors(QWidget *parent) : QMainWindow(parent), ui(new Ui::hfloors)
 
     QObject::connect(ui->btn_cancel, &QPushButton::clicked, [=] { this->close(); });  // 关闭页面
 
-    font_default = QFont("华文中宋", 18);
+    font_default = QFont("Microsoft YaHei", 18);
 
     f_16f = nullptr;
     k_16f = nullptr;
@@ -91,26 +91,6 @@ void hfloors::closeEvent(QCloseEvent *event)
     box->setFont(font_default);
     box->exec();
     delete box;
-}
-
-void hfloors::refont(const QFont &font)
-{
-    // 标签、按钮重设字体
-    ui->label_4->setFont(font);
-    ui->label_5->setFont(font);
-    ui->label_6->setFont(font);
-    ui->btn_caculate->setFont(font);
-    ui->btn_confirm->setFont(font);
-    ui->btn_cancel->setFont(font);
-
-    // 表格重设字体
-    ui->table_floor->setFont(font);
-    ui->table_floor->horizontalHeader()->setFont(font);
-
-    // 输入栏重设字体
-    ui->li_1->setFont(font);
-    ui->li_2->setFont(font);
-    ui->li_3->setFont(font);
 }
 
 void hfloors::on_btn_caculate_clicked()
@@ -315,9 +295,14 @@ void hfloors::on_btn_confirm_clicked()
     }
 }
 
-// 根据系统DPI重设字体
-const QFont hfloors::font_resize(const int &width, const int &height, const int &screen_dpi)
+void hfloors::resizeEvent(QResizeEvent *event)
 {
+    (void)event;
+    int width  = this->width();
+    int height = this->height();
+
+    qreal screen_dpi = QGuiApplication::primaryScreen()->devicePixelRatio();  // 获取主屏幕的缩放比例
+
     int origin_count = 14;
     if (width <= 1000 || height <= 730) {
         origin_count += 2;
@@ -331,21 +316,24 @@ const QFont hfloors::font_resize(const int &width, const int &height, const int 
     } else if (screen_dpi > 1.55) {
         origin_count -= 6;
     }
-    QFont font("Microsoft YaHei", origin_count);
-    return font;
-}
+    font_default.setPointSize(origin_count);
 
-void hfloors::resizeEvent(QResizeEvent *event)
-{
-    (void)event;
-    int Width  = this->width();
-    int Height = this->height();
+    // 标签、按钮重设字体
+    ui->label_4->setFont(font_default);
+    ui->label_5->setFont(font_default);
+    ui->label_6->setFont(font_default);
+    ui->btn_caculate->setFont(font_default);
+    ui->btn_confirm->setFont(font_default);
+    ui->btn_cancel->setFont(font_default);
 
-    qreal scaleFactor = QGuiApplication::primaryScreen()->devicePixelRatio();  // 获取主屏幕的缩放比例
+    // 表格重设字体
+    ui->table_floor->setFont(font_default);
+    ui->table_floor->horizontalHeader()->setFont(font_default);
 
-    QFont font = font_resize(Width, Height, scaleFactor);
-
-    refont(font);  // 当前页面的高度或宽度在某个范围，改变控件字体格式
+    // 输入栏重设字体
+    ui->li_1->setFont(font_default);
+    ui->li_2->setFont(font_default);
+    ui->li_3->setFont(font_default);
 }
 
 // 键盘按键，控制按钮

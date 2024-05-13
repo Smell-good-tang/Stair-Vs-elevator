@@ -20,14 +20,12 @@ public:
     ~efloors();
 
 private slots:
-    void        on_btn_caculate_clicked();
-    void        floor_1();
-    void        on_btn_confirm_clicked();
-    void        wrong();
-    const QFont font_resize(const int &width, const int &height, const int &screen_dpi);
-    void        refont(QFont a);
-    void        messagebox_common(const QString &title, const QString &text);
-    void        format_constrain();
+    void on_btn_caculate_clicked();
+    void floor_1();
+    void on_btn_confirm_clicked();
+    void wrong();
+    void messagebox_common(const QString &title, const QString &text);
+    void format_constrain();
 
 protected:
     void resizeEvent(QResizeEvent *event);

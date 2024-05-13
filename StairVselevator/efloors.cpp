@@ -19,7 +19,7 @@ efloors::efloors(QWidget *parent) : QMainWindow(parent), ui(new Ui::efloors)
     format_constrain();  // 设置控件格式
 
     QObject::connect(ui->btn_cancel, &QPushButton::clicked, [=] { this->close(); });  // 关闭页面
-    font_default = QFont("华文中宋", 18);
+    font_default = QFont("Microsoft YaHei", 18);
 
     total_8f = 0;
 
@@ -59,37 +59,6 @@ void efloors::format_constrain()
     int screenW = screenRect.width();
     int screenH = screenRect.height();
     this->move((screenW - this->width()) / 2, (screenH - this->height()) / 2);
-}
-
-// 根据系统DPI重设字体
-const QFont efloors::font_resize(const int &width, const int &height, const int &screen_dpi)
-{
-    int origin_count = 14;
-    if (width <= 1000 || height <= 730) {
-        origin_count += 2;
-    } else {
-        origin_count += 4;
-    }
-    if (1.1 < screen_dpi && screen_dpi <= 1.35) {
-        origin_count -= 2;
-    } else if (1.35 < screen_dpi && screen_dpi <= 1.55) {
-        origin_count -= 4;
-    } else if (screen_dpi > 1.55) {
-        origin_count -= 6;
-    }
-    QFont font("Microsoft YaHei", origin_count);
-    return font;
-}
-
-// 重设标签字体
-void efloors::refont(QFont a)
-{
-    for (QLabel *label : label_vector) {
-        label->setFont(a);
-    }
-    ui->btn_caculate->setFont(a);
-    ui->btn_confirm->setFont(a);
-    ui->btn_cancel->setFont(a);
 }
 
 // 隐藏控件
@@ -285,12 +254,32 @@ void efloors::on_btn_confirm_clicked()
 // 控件字体自适应窗口缩放
 void efloors::resizeEvent(QResizeEvent *event)
 {
-    int Width  = this->width();
-    int Height = this->height();
+    int width  = this->width();
+    int height = this->height();
 
-    // 获取主屏幕的缩放比例
-    qreal scaleFactor = QGuiApplication::primaryScreen()->devicePixelRatio();
-    refont(font_resize(Width, Height, scaleFactor));
+    qreal screen_dpi = QGuiApplication::primaryScreen()->devicePixelRatio();  // 获取主屏幕的缩放比例
+
+    int origin_count = 14;
+    if (width <= 1000 || height <= 730) {
+        origin_count += 2;
+    } else {
+        origin_count += 4;
+    }
+    if (1.1 < screen_dpi && screen_dpi <= 1.35) {
+        origin_count -= 2;
+    } else if (1.35 < screen_dpi && screen_dpi <= 1.55) {
+        origin_count -= 4;
+    } else if (screen_dpi > 1.55) {
+        origin_count -= 6;
+    }
+    font_default.setPointSize(origin_count);
+
+    // 重设标签字体
+    for (QLabel *label : label_vector) {
+        label->setFont(font_default);
+    }
+    ui->btn_caculate->setFont(font_default);
+    ui->btn_confirm->setFont(font_default);
 }
 
 void efloors::closeEvent(QCloseEvent *event)

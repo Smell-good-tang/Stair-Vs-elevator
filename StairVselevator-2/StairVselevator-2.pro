@@ -30,7 +30,7 @@ RESOURCES += \
 CONFIG(debug, debug|release)
    {
         DEFINES += VLD_MODULE
-        VLD_PATH = "S:/Visual Leak Detector"
+        VLD_PATH = "C:/Program Files (x86)/Visual Leak Detector"
         INCLUDEPATH += $${VLD_PATH}/include
         LIBS += -L$${VLD_PATH}/lib/Win64 -lvld
    }

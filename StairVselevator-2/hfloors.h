@@ -20,12 +20,10 @@ public:
     explicit hfloors(QWidget *parent = nullptr);
     ~hfloors();
 private slots:
-    void        on_btn_caculate_clicked();
-    void        on_btn_confirm_clicked();
-    void        refont(const QFont &font);
-    void        format_constrain();
-    const QFont font_resize(const int &width, const int &height, const int &screen_dpi);
-    void        messagebox_common(const QString &title, const QString &text);
+    void on_btn_caculate_clicked();
+    void on_btn_confirm_clicked();
+    void format_constrain();
+    void messagebox_common(const QString &title, const QString &text);
 
 protected:
     void keyPressEvent(QKeyEvent *event);
