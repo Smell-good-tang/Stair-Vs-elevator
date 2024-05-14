@@ -280,6 +280,7 @@ void efloors::resizeEvent(QResizeEvent *event)
     }
     ui->btn_caculate->setFont(font_default);
     ui->btn_confirm->setFont(font_default);
+    ui->btn_cancel->setFont(font_default);
 }
 
 void efloors::closeEvent(QCloseEvent *event)
