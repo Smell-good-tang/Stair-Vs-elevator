@@ -20,7 +20,7 @@ public:
     explicit hfloors(QWidget *parent = nullptr);
     ~hfloors();
 private slots:
-    void on_btn_caculate_clicked();
+    void on_btn_calculate_clicked();
     void on_btn_confirm_clicked();
     void format_constrain();
     void messagebox_common(const QString &title, const QString &text);

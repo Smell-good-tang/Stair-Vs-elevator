@@ -93,7 +93,7 @@ void hfloors::closeEvent(QCloseEvent *event)
     delete box;
 }
 
-void hfloors::on_btn_caculate_clicked()
+void hfloors::on_btn_calculate_clicked()
 {
     // 还没有输入有效总楼层数，并按按钮2
     if (ui->table_floor->isHidden()) {
@@ -322,7 +322,7 @@ void hfloors::resizeEvent(QResizeEvent *event)
     ui->label_4->setFont(font_default);
     ui->label_5->setFont(font_default);
     ui->label_6->setFont(font_default);
-    ui->btn_caculate->setFont(font_default);
+    ui->btn_calculate->setFont(font_default);
     ui->btn_confirm->setFont(font_default);
     ui->btn_cancel->setFont(font_default);
 
@@ -343,8 +343,8 @@ void hfloors::keyPressEvent(QKeyEvent *event)
         QWidget *cur_wid = QApplication::focusWidget();
         if (cur_wid == ui->btn_cancel) {
             ui->btn_cancel->clicked();
-        } else if (cur_wid == ui->btn_caculate) {
-            on_btn_caculate_clicked();
+        } else if (cur_wid == ui->btn_calculate) {
+            on_btn_calculate_clicked();
         } else if (cur_wid == ui->btn_confirm) {
             on_btn_confirm_clicked();
         }
