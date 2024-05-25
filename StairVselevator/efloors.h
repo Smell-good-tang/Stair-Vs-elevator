@@ -20,7 +20,7 @@ public:
     ~efloors();
 
 private slots:
-    void on_btn_caculate_clicked();
+    void on_btn_calculate_clicked();
     void floor_1();
     void on_btn_confirm_clicked();
     void wrong();

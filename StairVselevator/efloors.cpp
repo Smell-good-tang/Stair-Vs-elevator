@@ -84,7 +84,7 @@ void efloors::messagebox_common(const QString &title, const QString &text)
 }
 
 // 计算
-void efloors::on_btn_caculate_clicked()
+void efloors::on_btn_calculate_clicked()
 {
     // 还没有输入有效总楼层数，并按按钮2
     if (ui->label->isHidden()) {
@@ -278,7 +278,7 @@ void efloors::resizeEvent(QResizeEvent *event)
     for (QLabel *label : label_vector) {
         label->setFont(font_default);
     }
-    ui->btn_caculate->setFont(font_default);
+    ui->btn_calculate->setFont(font_default);
     ui->btn_confirm->setFont(font_default);
     ui->btn_cancel->setFont(font_default);
 }
@@ -299,8 +299,8 @@ void efloors::keyPressEvent(QKeyEvent *event)
         QWidget *cur_wid = QApplication::focusWidget();
         if (cur_wid == ui->btn_cancel) {
             ui->btn_cancel->clicked();
-        } else if (cur_wid == ui->btn_caculate) {
-            on_btn_caculate_clicked();
+        } else if (cur_wid == ui->btn_calculate) {
+            on_btn_calculate_clicked();
         } else if (cur_wid == ui->btn_confirm) {
             on_btn_confirm_clicked();
         }
