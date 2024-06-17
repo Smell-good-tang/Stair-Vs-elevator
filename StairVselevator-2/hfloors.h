@@ -24,6 +24,7 @@ private slots:
     void on_btn_confirm_clicked();
     void format_constrain();
     void messagebox_common(const QString &title, const QString &text);
+    void clearModel();
 
 protected:
     void keyPressEvent(QKeyEvent *event);
