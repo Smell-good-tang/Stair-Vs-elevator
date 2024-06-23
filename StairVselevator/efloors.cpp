@@ -22,9 +22,6 @@ efloors::efloors(QWidget *parent) : QMainWindow(parent), ui(new Ui::efloors)
     font_default = QFont("Microsoft YaHei", 18);
 
     total_8f = 0;
-
-    f_8f = nullptr;
-    k_8f = nullptr;
 }
 
 efloors::~efloors()

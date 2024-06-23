@@ -34,10 +34,10 @@ protected:
 
 private:
     int                 total_8f;
-    bool               *f_8f;
-    int                *k_8f;
+    bool               *f_8f = nullptr;
+    int                *k_8f = nullptr;
     QFont               font_default;
-    QIntValidator      *IntValidator;
+    QIntValidator      *IntValidator = nullptr;
     QVector<QLabel *>   label_vector;
     QVector<QSpinBox *> floors_vector;
     Ui::efloors        *ui;
