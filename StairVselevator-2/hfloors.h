@@ -34,14 +34,14 @@ protected:
 private:
     // new对象，建在堆上
     QStandardItemModel *model;
-    QIntValidator      *IntValidator;
-    TableDelegate      *editDelegate;
-    QStandardItem      *floors;
-    QStandardItem      *stairs;
+    QIntValidator      *IntValidator = nullptr;
+    TableDelegate      *editDelegate = nullptr;
+    QStandardItem      *floors       = nullptr;
+    QStandardItem      *stairs       = nullptr;
 
     int          total_16f;
-    bool        *f_16f;
-    int         *k_16f;
+    bool        *f_16f = nullptr;
+    int         *k_16f = nullptr;
     QFont        font_default;
     Ui::hfloors *ui;
 };

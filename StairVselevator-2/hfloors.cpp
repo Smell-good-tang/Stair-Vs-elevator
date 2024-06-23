@@ -16,17 +16,12 @@ hfloors::hfloors(QWidget *parent) : QMainWindow(parent), ui(new Ui::hfloors)
     ui->setupUi(this);
     model        = new QStandardItemModel(this);
     editDelegate = new TableDelegate();
-    floors       = nullptr;
-    stairs       = nullptr;
 
     format_constrain();  // 限制控件格式
 
     QObject::connect(ui->btn_cancel, &QPushButton::clicked, [=] { this->close(); });  // 关闭页面
 
     font_default = QFont("Microsoft YaHei", 18);
-
-    f_16f = nullptr;
-    k_16f = nullptr;
 }
 
 hfloors::~hfloors()
@@ -158,38 +153,36 @@ void hfloors::on_btn_calculate_clicked()
     }
 
     // 开始计算最小按键次数
-    int                         result_floor_16f = -1;
     std::queue<QPair<int, int>> q;
-    q.push(QPair<int, int>(start_16f, 0));
+    q.push({start_16f, 0});
 
     while (!q.empty()) {
-        QPair<int, int> p = q.front();
+        auto [current_floor, press_count] = q.front();
         q.pop();
 
-        if (f_16f[p.first]) {
+        if (f_16f[current_floor]) {
             continue;
         }
-        f_16f[p.first] = true;
 
-        if (p.first == end_16f) {
-            result_floor_16f = p.second;
-            break;
+        f_16f[current_floor] = true;
+
+        if (current_floor == end_16f) {
+            messagebox_common("Congratulations!", QString("最少需要按").append(QString::number(press_count)).append("次按钮就能到达指定楼层。"));
+            return;
         }
 
-        if (p.first - k_16f[p.first] > 0) {
-            q.push(QPair<int, int>(p.first - k_16f[p.first], p.second + 1));
+        int next_floor_down = current_floor - k_16f[current_floor];
+        if (next_floor_down > 0 && !f_16f[next_floor_down]) {
+            q.push({next_floor_down, press_count + 1});
         }
 
-        if (p.first + k_16f[p.first] <= total_16f) {
-            q.push(QPair<int, int>(p.first + k_16f[p.first], p.second + 1));
+        int next_floor_up = current_floor + k_16f[current_floor];
+        if (next_floor_up <= total_16f && !f_16f[next_floor_up]) {
+            q.push({next_floor_up, press_count + 1});
         }
     }
 
-    if (result_floor_16f == -1) {
-        messagebox_common("注意！", "指定条件无法到达。");
-    } else {
-        messagebox_common("Congratulations!", QString("最少需要按").append(QString::number(result_floor_16f)).append("次按钮就能到达指定楼层。"));
-    }
+    messagebox_common("注意！", "指定条件无法到达。");
 }
 
 // 清空表格模型
