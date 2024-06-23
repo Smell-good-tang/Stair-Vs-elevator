@@ -92,7 +92,25 @@
            </sizepolicy>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(186, 197, 53, 255), stop:1 rgba(158, 249, 255, 255));</string>
+           <string notr="true">QPushButton
+{
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(186, 197, 53, 255), stop:1 rgba(158, 249, 255, 255));
+    border: 1px solid #d0d0d0;  
+    border-radius: 4px;  
+    padding: 5px;  
+    color: #333;  
+}  
+  
+QPushButton : hover
+{
+    background-color: #e0e0e0;  
+}  
+  
+QPushButton : pressed
+{
+    background-color: #d0d0d0;  
+}
+</string>
           </property>
           <property name="text">
            <string>我是按钮1，我负
@@ -109,7 +127,25 @@
            </sizepolicy>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(53, 197, 179, 255), stop:1 rgba(255, 158, 158, 255));</string>
+           <string notr="true">QToolButton
+{
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:0, stop:0 rgba(53, 197, 179, 255), stop:1 rgba(255, 158, 158, 255));
+    border: 1px solid #d0d0d0;  
+    border-radius: 4px;  
+    padding: 5px;  
+    color: #333;  
+}  
+  
+QToolButton : hover
+{
+    background-color: #e0e0e0;  
+}  
+  
+QToolButton : pressed
+{
+    background-color: #d0d0d0;  
+}
+</string>
           </property>
           <property name="text">
            <string>我是按钮2
@@ -137,7 +173,26 @@
            </sizepolicy>
           </property>
           <property name="styleSheet">
-           <string notr="true">background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 170, 255, 255), stop:1 rgba(170, 255, 0, 255));</string>
+           <string notr="true">QPushButton
+{
+    background-color: qlineargradient(spread:pad, x1:0, y1:0, x2:1, y2:1, stop:0 rgba(0, 170, 255, 255), stop:1 rgba(170, 255, 0, 255));
+    border: 1px solid #d0d0d0;  
+    border-radius: 4px;  
+    padding: 5px;  
+    color: #333;  
+}  
+  
+QPushButton : hover
+{
+    background-color: #e0e0e0;  
+}  
+  
+QPushButton : pressed
+{
+    background-color: #d0d0d0;  
+}
+
+</string>
           </property>
           <property name="text">
            <string>退出</string>
@@ -198,7 +253,17 @@
            </sizepolicy>
           </property>
           <property name="styleSheet">
-           <string notr="true"/>
+           <string notr="true">QLineEdit {  
+    background-color: white;  
+    border: 1px solid #d0d0d0;  
+    border-radius: 4px;  
+    padding: 5px;  
+    color: #333;  
+}  
+  
+QLineEdit:focus {  
+    border-color: #007bff; /* Blue outline when focused */  
+}</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -252,7 +317,17 @@
            </sizepolicy>
           </property>
           <property name="styleSheet">
-           <string notr="true"/>
+           <string notr="true">QLineEdit {  
+    background-color: white;  
+    border: 1px solid #d0d0d0;  
+    border-radius: 4px;  
+    padding: 5px;  
+    color: #333;  
+}  
+  
+QLineEdit:focus {  
+    border-color: #007bff; /* Blue outline when focused */  
+}</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
@@ -306,7 +381,17 @@
            </sizepolicy>
           </property>
           <property name="styleSheet">
-           <string notr="true"/>
+           <string notr="true">QLineEdit {  
+    background-color: white;  
+    border: 1px solid #d0d0d0;  
+    border-radius: 4px;  
+    padding: 5px;  
+    color: #333;  
+}  
+  
+QLineEdit:focus {  
+    border-color: #007bff; /* Blue outline when focused */  
+}</string>
           </property>
           <property name="alignment">
            <set>Qt::AlignCenter</set>
