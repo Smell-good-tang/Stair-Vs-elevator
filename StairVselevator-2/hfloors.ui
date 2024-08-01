@@ -71,6 +71,9 @@
       <property name="autoScrollMargin">
        <number>16</number>
       </property>
+      <property name="editTriggers">
+       <set>QAbstractItemView::EditTrigger::AnyKeyPressed|QAbstractItemView::EditTrigger::DoubleClicked|QAbstractItemView::EditTrigger::EditKeyPressed|QAbstractItemView::EditTrigger::SelectedClicked</set>
+      </property>
      </widget>
     </item>
     <item row="1" column="0">
@@ -240,7 +243,7 @@ QPushButton : pressed
            <string>总层数</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignCenter</set>
+           <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
          </widget>
         </item>
@@ -266,7 +269,7 @@ QLineEdit:focus {
 }</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignCenter</set>
+           <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
          </widget>
         </item>
@@ -304,7 +307,7 @@ QLineEdit:focus {
            <string>开始层</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignCenter</set>
+           <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
          </widget>
         </item>
@@ -330,7 +333,7 @@ QLineEdit:focus {
 }</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignCenter</set>
+           <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
          </widget>
         </item>
@@ -368,7 +371,7 @@ QLineEdit:focus {
            <string>目的层</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignCenter</set>
+           <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
          </widget>
         </item>
@@ -394,7 +397,7 @@ QLineEdit:focus {
 }</string>
           </property>
           <property name="alignment">
-           <set>Qt::AlignCenter</set>
+           <set>Qt::AlignmentFlag::AlignCenter</set>
           </property>
          </widget>
         </item>
@@ -405,10 +408,10 @@ QLineEdit:focus {
     <item row="0" column="1">
      <spacer name="horizontalSpacer">
       <property name="orientation">
-       <enum>Qt::Horizontal</enum>
+       <enum>Qt::Orientation::Horizontal</enum>
       </property>
       <property name="sizeType">
-       <enum>QSizePolicy::Preferred</enum>
+       <enum>QSizePolicy::Policy::Preferred</enum>
       </property>
       <property name="sizeHint" stdset="0">
        <size>
@@ -421,10 +424,10 @@ QLineEdit:focus {
     <item row="1" column="1">
      <spacer name="horizontalSpacer_2">
       <property name="orientation">
-       <enum>Qt::Horizontal</enum>
+       <enum>Qt::Orientation::Horizontal</enum>
       </property>
       <property name="sizeType">
-       <enum>QSizePolicy::Preferred</enum>
+       <enum>QSizePolicy::Policy::Preferred</enum>
       </property>
       <property name="sizeHint" stdset="0">
        <size>
