@@ -1,6 +1,7 @@
 ﻿#include <QApplication>
-#include <QSharedMemory>
+#include <QScreen>
 
+#include "SingleInstanceApp.h"
 #include "efloors.h"
 #ifdef VLD_MODULE
 #include "vld.h"
@@ -9,40 +10,64 @@
 #ifdef _WIN32
 #include "windows.h"
 #pragma comment(lib, "user32.lib")  // 添加这行以显式链接 user32.lib
-bool activateExistingWindow()
+void mouse_cursor(QWidget *widget)
 {
-    HWND hWnd = FindWindow(nullptr, L"8层运算界面");
-    if (hWnd != nullptr) {
-        // 找到窗口，激活并恢复它
-        if (IsIconic(hWnd)) {
-            ShowWindow(hWnd, SW_RESTORE);  // 如果窗口最小化，则恢复它
-        }
-        SetForegroundWindow(hWnd);
-        return true;
-    }
-    return false;
+    // 获取全局鼠标位置
+    QPoint globalPos_mouse = QCursor::pos();
+    // 获取窗口在屏幕上的位置
+    QPoint globalPos      = widget->mapToGlobal(QPoint(0, 0));
+    int    titleBarHeight = widget->geometry().top() - globalPos.y();
+
+    // 获取主屏幕的缩放比例
+    QScreen *screen        = QApplication::primaryScreen();
+    qreal    scalingFactor = screen->devicePixelRatio();
+
+    // 调整为实际的屏幕坐标
+    int x = static_cast<int>(globalPos.x() * scalingFactor + widget->width() / 2);
+    int y = static_cast<int>(globalPos.y() * scalingFactor - titleBarHeight / 2);
+
+    // 调整为实际的屏幕坐标
+    int x_ori = static_cast<int>(globalPos_mouse.x() * scalingFactor);
+    int y_ori = static_cast<int>(globalPos_mouse.y() * scalingFactor);
+
+    RECT mainWinRect;  // RECT在windef.h中被定义
+    mainWinRect.left   = (LONG)widget->geometry().left() - 0.00001;
+    mainWinRect.right  = (LONG)widget->geometry().right() + 0.00001;
+    mainWinRect.top    = (LONG)widget->geometry().top() + 0.00001;
+    mainWinRect.bottom = (LONG)widget->geometry().bottom() - 0.00001;
+
+    ClipCursor(&mainWinRect);  // 这是Windows API
+
+    // 设置鼠标位置
+    SetCursorPos(x, y);
+
+    mouse_event(MOUSEEVENTF_LEFTUP, x, y, 0, 0);  // 鼠标状态还原
+    // 模拟鼠标左键按下和释放事件
+    mouse_event(MOUSEEVENTF_LEFTDOWN, x, y, 0, 0);
+    mouse_event(MOUSEEVENTF_LEFTUP, x, y, 0, 0);
+
+    ClipCursor(nullptr);
+    // 鼠标位置还原
+    SetCursorPos(x_ori, y_ori);
 }
 #endif
 
 int main(int argc, char *argv[])
 {
-    QApplication  a(argc, argv);
-    QSharedMemory share;
-    share.setKey(QString("Existed_zhihuiyiyuanguanlixitong_single_8_floors"));
-    QFont font("Microsoft YaHei", 14);
-    // 禁止应用程序同时执行两个及以上
-    if (share.attach())  // 如果应用程序已经打开
-    {
-// 如果可以附加到共享内存，说明已经有一个实例在运行
-#ifdef _WIN32
-        if (activateExistingWindow()) {
-            return 0;  // 已激活窗口，退出应用
+    QApplication       a(argc, argv);
+    efloors           *e              = new efloors();
+    SingleInstanceApp *singleInstance = new SingleInstanceApp(e);
+    QObject::connect(singleInstance, &SingleInstanceApp::showExistingWindow, e, [=]() {
+        if (e->isMinimized()) {
+            e->showNormal();
         }
-#endif
-    } else if (share.create(1))  // 如果应用程序没有打开
-    {
-        efloors e;
-        e.show();
-        return a.exec();
-    }
+        if (e->isHidden()) {
+            e->showNormal();
+        }
+        SetWindowPos(HWND(e->winId()), HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
+        SetWindowPos(HWND(e->winId()), HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
+        mouse_cursor(e);
+    });
+    e->show();
+    return a.exec();
 }

@@ -13,12 +13,13 @@
 efloors::efloors(QWidget *parent) : QMainWindow(parent), ui(new Ui::efloors)
 {
     ui->setupUi(this);
+    this->setAttribute(Qt::WA_DeleteOnClose);
     label_vector  = {ui->label, ui->label_2, ui->label_4, ui->label_5, ui->label_6};
     floors_vector = {ui->spin_4, ui->spin_5, ui->spin_6, ui->spin_7, ui->spin_8, ui->spin_9, ui->spin_10, ui->spin_11};
     wrong();
     format_constrain();  // 设置控件格式
 
-    QObject::connect(ui->btn_cancel, &QPushButton::clicked, [=] { this->close(); });  // 关闭页面
+    QObject::connect(ui->btn_cancel, &QPushButton::clicked, this, [=] { this->close(); });  // 关闭页面
     font_default = QFont("Microsoft YaHei", 18);
 
     total_8f = 0;
