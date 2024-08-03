@@ -17,11 +17,8 @@ hfloors::hfloors(QWidget *parent) : QMainWindow(parent), ui(new Ui::hfloors)
     this->setAttribute(Qt::WA_DeleteOnClose);
     model        = new QStandardItemModel(this);
     editDelegate = new TableDelegate();
-
-    format_constrain();  // 限制控件格式
-
+    format_constrain();                                                                     // 限制控件格式
     QObject::connect(ui->btn_cancel, &QPushButton::clicked, this, [=] { this->close(); });  // 关闭页面
-
     font_default = QFont("Microsoft YaHei", 18);
 }
 
