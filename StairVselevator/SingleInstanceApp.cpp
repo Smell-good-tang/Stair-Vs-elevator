@@ -2,7 +2,7 @@
 
 SingleInstanceApp::SingleInstanceApp(QObject *parent) : QObject(parent)
 {
-    QString local_server_name = "An_example_for_hfloors.";
+    QString local_server_name = "An_example_for_efloors.";
     socket                    = new QLocalSocket(this);
     socket->connectToServer(local_server_name);
     if (socket->waitForConnected(500)) {
