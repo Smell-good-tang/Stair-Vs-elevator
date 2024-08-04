@@ -16,20 +16,25 @@ int main(int argc, char *argv[])
     efloors           *e              = new efloors();
     SingleInstanceApp *singleInstance = new SingleInstanceApp(e);
     QObject::connect(singleInstance, &SingleInstanceApp::showExistingWindow, e, [=]() {
-        HWND  hForeWnd = NULL;
-        HWND  hWnd     = HWND(e->winId());
-        DWORD dwForeID;
-        DWORD dwCurID;
+        if (!e->isHidden()) {
+            HWND  hForeWnd = NULL;
+            HWND  hWnd     = HWND(e->winId());
+            DWORD dwForeID;
+            DWORD dwCurID;
 
-        hForeWnd = GetForegroundWindow();
-        dwCurID  = GetCurrentThreadId();
-        dwForeID = GetWindowThreadProcessId(hForeWnd, NULL);
-        AttachThreadInput(dwCurID, dwForeID, TRUE);
-        ShowWindow(hWnd, SW_SHOWNORMAL);
-        SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
-        SetWindowPos(hWnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
-        SetForegroundWindow(hWnd);
-        AttachThreadInput(dwCurID, dwForeID, FALSE);
+            hForeWnd = GetForegroundWindow();
+            dwCurID  = GetCurrentThreadId();
+            dwForeID = GetWindowThreadProcessId(hForeWnd, NULL);
+            AttachThreadInput(dwCurID, dwForeID, TRUE);
+            ShowWindow(hWnd, SW_SHOWNORMAL);
+            SetWindowPos(hWnd, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
+            SetWindowPos(hWnd, HWND_NOTOPMOST, 0, 0, 0, 0, SWP_NOSIZE | SWP_NOMOVE);
+            SetForegroundWindow(hWnd);
+            AttachThreadInput(dwCurID, dwForeID, FALSE);
+        } else {
+            e->activateWindow();
+            e->show();
+        }
     });
     e->show();
     return a.exec();
