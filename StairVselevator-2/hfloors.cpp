@@ -7,6 +7,7 @@
 #include <QMessageBox>
 #include <QScreen>
 #include <QStandardItemModel>
+#include <QStyle>
 #include <QTimer>
 
 #include "ui_hfloors.h"
@@ -62,11 +63,11 @@ void hfloors::format_constrain()
     ui->li_3->setValidator(IntValidator);
 
     // 页面居中
-    QRect screenRect = QGuiApplication::primaryScreen()->geometry();  // 获取设备屏幕大小
-    // 获取设备像素比
-    int screenW = screenRect.width();
-    int screenH = screenRect.height();
-    this->move((screenW - this->width()) / 2, (screenH - this->height()) / 2);
+    QRect screenRect     = QGuiApplication::primaryScreen()->geometry();  // 获取工作区域的几何信息（不包括任务栏）
+    int   screenW        = screenRect.width();
+    int   screenH        = screenRect.height();
+    int   titleBarHeight = this->style()->pixelMetric(QStyle::PM_TitleBarHeight);  // 获取标题栏高度
+    this->move((screenW - this->width()) / 2, (screenH - this->height() - titleBarHeight) / 2);
 }
 
 // 统一设置消息框
