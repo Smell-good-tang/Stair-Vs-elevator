@@ -62,12 +62,31 @@ void hfloors::format_constrain()
     ui->li_2->setValidator(IntValidator);
     ui->li_3->setValidator(IntValidator);
 
-    // 页面居中
-    QRect screenRect     = QGuiApplication::primaryScreen()->geometry();  // 获取工作区域的几何信息（不包括任务栏）
+    // 适应屏幕实际大小
+    QRect screenRect     = QGuiApplication::primaryScreen()->availableGeometry();  // 获取工作区域的几何信息（不包括任务栏）
+    int   titleBarHeight = this->style()->pixelMetric(QStyle::PM_TitleBarHeight);  // 获取标题栏高度
     int   screenW        = screenRect.width();
     int   screenH        = screenRect.height();
-    int   titleBarHeight = this->style()->pixelMetric(QStyle::PM_TitleBarHeight);  // 获取标题栏高度
-    this->move((screenW - this->width()) / 2, (screenH - this->height() - titleBarHeight) / 2);
+    int   screen_W_h     = this->width();
+    int   screen_H_h     = this->height() + titleBarHeight;
+    bool  need_resize    = false;
+    if (screen_W_h > screenW) {
+        screen_W_h  = screenW;
+        need_resize = true;
+    }
+    if (screen_H_h > screenH) {
+        screen_H_h  = screenH - titleBarHeight;
+        need_resize = true;
+    }
+    if (need_resize) {
+        this->setMinimumSize(screen_W_h / 5, screen_H_h / 5);
+        this->resize(screen_W_h, screen_H_h);
+    }
+
+    // 页面居中
+    screen_W_h = this->width();
+    screen_H_h = this->height() + titleBarHeight;
+    this->move((screenW - screen_W_h) / 2, (screenH - screen_H_h) / 2);
 }
 
 // 统一设置消息框
