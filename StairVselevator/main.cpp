@@ -1,5 +1,6 @@
 ﻿#include <QApplication>
 #include <QScreen>
+#include <QStyle>
 
 #include "SingleInstanceApp.h"
 #include "efloors.h"
