@@ -16,25 +16,22 @@ efloors::efloors(QWidget *parent) : QMainWindow(parent), ui(new Ui::efloors)
 {
     ui->setupUi(this);
     this->setAttribute(Qt::WA_DeleteOnClose);
-    label_vector  = {ui->label, ui->label_2, ui->label_4, ui->label_5, ui->label_6};
     floors_vector = {ui->spin_4, ui->spin_5, ui->spin_6, ui->spin_7, ui->spin_8, ui->spin_9, ui->spin_10, ui->spin_11};
-    wrong();
+    hide_and_initialize();
     format_constrain();                                                                     // 设置控件格式
     QObject::connect(ui->btn_cancel, &QPushButton::clicked, this, [=] { this->close(); });  // 关闭页面
     font_default = QFont("Microsoft YaHei", 18);
-    total_8f     = 0;
+    foreach (QWidget *widget, this->findChildren<QWidget *>()) {
+        widget->setFont(font_default);
+    }
 }
 
 efloors::~efloors()
 {
     delete IntValidator;
-    label_vector.clear();
-    floors_vector.clear();
-
     // 当数组不再需要时，释放内存
     delete[] f_8f;
     delete[] k_8f;
-
     // 将指针设置为nullptr，避免出现悬挂指针
     f_8f = nullptr;
     k_8f = nullptr;
@@ -79,7 +76,7 @@ void efloors::format_constrain()
 }
 
 // 隐藏控件
-void efloors::wrong()
+void efloors::hide_and_initialize()
 {
     ui->label->hide();
     ui->label_2->hide();
@@ -94,19 +91,9 @@ void efloors::wrong()
 // 统一设置消息框
 void efloors::messagebox_common(const QString &title, const QString &text)
 {
-    QMessageBox *box = new QMessageBox(QMessageBox::Information, title, text, QMessageBox::NoButton, this);
-    box->setFont(font_default);
-    box->exec();
-    delete box;
-}
-
-void efloors::closeEvent(QCloseEvent *event)
-{
-    QMessageBox *box = new QMessageBox(QMessageBox::Information, "再见！", "谢谢使用！", QMessageBox::NoButton, this);
-    QTimer::singleShot(3000, box, SLOT(accept()));
-    box->setFont(font_default);
-    box->exec();
-    delete box;
+    QMessageBox box(QMessageBox::Information, title, text, QMessageBox::NoButton, this);
+    box.setFont(font_default);
+    box.exec();
 }
 
 // 计算
@@ -199,7 +186,7 @@ void efloors::on_btn_calculate_clicked()
 }
 
 // 控制可显示的上下楼层
-void efloors::floor_1()
+void efloors::floor_able_to_be_seen()
 {
     int total_8f_cur = ui->li_1->text().toInt();
     if (total_8f < total_8f_cur) {
@@ -228,9 +215,9 @@ void efloors::on_btn_confirm_clicked()
         } else if (total_8f_child > 8) {
             messagebox_common("注意！", "该版本运算程序最多运算总楼层数为8层！");
         }
-        wrong();
+        hide_and_initialize();
     } else if (total_8f != total_8f_child) {
-        floor_1();
+        floor_able_to_be_seen();
         total_8f = total_8f_child;
         ui->label_2->setText(QString("第").append(QString::number(total_8f).append("层")));
         ui->label->show();
@@ -239,54 +226,25 @@ void efloors::on_btn_confirm_clicked()
     }
 }
 
-// 自适应调整控件字体
-void efloors::resizeEvent(QResizeEvent *event)
-{
-    int width  = this->width();
-    int height = this->height();
-
-    qreal screen_dpi = QGuiApplication::primaryScreen()->devicePixelRatio();  // 获取主屏幕的缩放比例
-
-    int origin_count = 14;
-    if (width <= 1000 || height <= 730) {
-        origin_count += 2;
-    } else {
-        origin_count += 4;
-    }
-    if (1.1 < screen_dpi && screen_dpi <= 1.35) {
-        origin_count -= 2;
-    } else if (1.35 < screen_dpi && screen_dpi <= 1.55) {
-        origin_count -= 4;
-    } else if (screen_dpi > 1.55) {
-        origin_count -= 6;
-    }
-    font_default.setPointSize(origin_count);
-
-    for (QLabel *label : label_vector) {
-        label->setFont(font_default);
-    }
-    ui->btn_calculate->setFont(font_default);
-    ui->btn_confirm->setFont(font_default);
-    ui->btn_cancel->setFont(font_default);
-}
-
 // 处理键盘按压事件
 void efloors::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
         case Qt::Key_Return: {
-            QWidget *cur_wid = QApplication::focusWidget();
-            if (cur_wid == ui->btn_cancel) {
-                ui->btn_cancel->click();
-            } else if (cur_wid == ui->btn_calculate) {
-                on_btn_calculate_clicked();
-            } else if (cur_wid == ui->btn_confirm) {
-                on_btn_confirm_clicked();
+            QWidget     *cur_wid = QApplication::focusWidget();
+            QPushButton *btn     = dynamic_cast<QPushButton *>(cur_wid);
+            if (btn) {
+                if (btn->isEnabled()) {
+                    emit btn->clicked();
+                }
+                break;
             }
             break;
         }
         case Qt::Key_Escape: {
-            ui->btn_cancel->click();
+            if (ui->btn_cancel->isEnabled()) {
+                emit ui->btn_cancel->clicked();
+            }
             break;
         }
         default:

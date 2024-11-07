@@ -20,26 +20,27 @@ public:
     ~efloors();
 
 private slots:
-    void on_btn_calculate_clicked();
-    void floor_1();
-    void on_btn_confirm_clicked();
-    void wrong();
-    void messagebox_common(const QString &title, const QString &text);
-    void format_constrain();
+    void on_btn_calculate_clicked();  // 计算到达指定楼层的最少的按按钮次数
+    void on_btn_confirm_clicked();    // 确认总楼层数
 
 protected:
-    void resizeEvent(QResizeEvent *event);
-    void closeEvent(QCloseEvent *event);
-    void keyPressEvent(QKeyEvent *event);
+    void keyPressEvent(QKeyEvent *event) override;  // 自定义按键按压事件
 
 private:
-    int                 total_8f;
-    bool               *f_8f = nullptr;
-    int                *k_8f = nullptr;
-    QFont               font_default;
-    QIntValidator      *IntValidator = nullptr;
-    QVector<QLabel *>   label_vector;
-    QVector<QSpinBox *> floors_vector;
-    Ui::efloors        *ui;
+    void hide_and_initialize();                                         // 隐藏并初始化控件
+    void format_constrain();                                            // 控制控件格式
+    void floor_able_to_be_seen();                                       // 可以输入上下楼层数的层
+    void messagebox_common(const QString &title, const QString &text);  // 公用消息框
+
+private:
+    // new对象，建在堆上
+    QIntValidator *IntValidator = nullptr;  // 输入数据限制
+    bool          *f_8f         = nullptr;  // 储存楼层是否已到达
+    int           *k_8f         = nullptr;  // 储存楼层上下楼层数
+    Ui::efloors   *ui;
+
+    int                 total_8f = 0;   // 总楼层数
+    QFont               font_default;   // 默认字体
+    QVector<QSpinBox *> floors_vector;  // 储存上下楼层数数字盒
 };
 #endif  // MAINWINDOW_H
