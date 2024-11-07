@@ -11,7 +11,8 @@ CONFIG += c++17
 SOURCES += \
     SingleInstanceApp.cpp \
     main.cpp \
-    hfloors.cpp
+    hfloors.cpp \
+    table_view.cpp
 
 HEADERS += \
     SingleInstanceApp.h \
